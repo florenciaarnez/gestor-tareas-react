@@ -1,0 +1,15 @@
+.page.Home {
+    background-color: yellow;
+}
+
+.page.About {
+    background-color: red;
+}
+
+.page.Login {
+    background-color: blue;
+}
+
+.page.Register {
+    background-color: green;
+}
