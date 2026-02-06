@@ -1,8 +1,7 @@
 import '../styles/views/home.css'
 import { Navbar } from "../components/header";
 import { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import {auth } from "../config/firebase.js";
+import { useAuth } from '../context/authContext.jsx';
 
 const Login = () => {
     const [formDataUser, setFormDataUser] = useState({
@@ -13,16 +12,15 @@ const Login = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
-  const handleSubmit = async (e) => {
+   const { login } = useAuth();
+   
+    const handleSubmit = async (e) => {
     e.preventDefault(); // evita que se recargue la página
-    console.log("Email:", formDataUser);
+    
     try{
-      const userCredential = await signInWithEmailAndPassword(auth, formDataUser.email, formDataUser.password);
-      console.log("", userCredential);
+      await login(formDataUser.email, formDataUser.password);
       setError(null); // Limpiar errores previos si la creación fue exitosa
       setSuccess("Usuario logueado exitosamente");
-      // setUser(userCredential.user); // Guarda el usuario logueado en el estado
-      console.log("Usuario logueado:", userCredential.user);
     }
     catch(error){
       console.error("Usuario o contraseña incorrectos:", error);
