@@ -83,8 +83,8 @@ const Register = () => {
                   required
                 />
               </div>
-
-              <button type="submit">Registrarme</button>
+              
+              <div id="register-button"><button type="submit">Registrarme</button></div>
               {error && <p style={{ color: "red", marginTop: "10px", marginBottom: "10px" }}>{error}</p>}
               {success && <p style={{ color: "green", marginTop: "10px", marginBottom: "10px" }}>{success}</p>}
             </form>
