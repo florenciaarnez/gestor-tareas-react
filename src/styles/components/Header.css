@@ -1,0 +1,20 @@
+/* Header */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  background-color: #dff3ff;
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+  color: #3b82b8;
+}
+
+
+.links {
+  display: flex;
+  gap: 22px;
+}
