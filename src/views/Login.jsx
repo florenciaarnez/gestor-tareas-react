@@ -1,4 +1,4 @@
-import '../styles/views/home.css'
+import '../styles/views/login.css'
 import { Navbar } from "../components/header";
 import { useState } from "react";
 import { useAuth } from '../context/authContext.jsx';
@@ -32,36 +32,39 @@ const Login = () => {
   return (
     <>
       <Navbar />
-      <div style={{ maxWidth: "400px", margin: "40px auto" }}>
-        <h2>Iniciar Sesion</h2>
+      <div id="Login">
+        <div id="login-container">
+          <h2>Iniciar Sesion</h2>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formDataUser.email}
-            onChange={(e) => setFormDataUser({ ...formDataUser, email: e.target.value })}
-            required
-          />
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label>Email</label>
+              <input
+                type="email"
+                name="email"
+                value={formDataUser.email}
+                onChange={(e) => setFormDataUser({ ...formDataUser, email: e.target.value })}
+                required
+              />
+            </div>
+
+            <div>
+              <label>Contraseña</label>
+              <input
+                type="password"
+                name="password"
+                value={formDataUser.password}
+                onChange={(e) => setFormDataUser({ ...formDataUser, password: e.target.value })}
+                required
+              />
+            </div>
+
+            <button type="submit">Ingresar</button>
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            {success && <p style={{ color: "green" }}>{success}</p>}
+          </form>
         </div>
-
-        <div>
-          <label>Contraseña</label>
-          <input
-            type="password"
-            name="password"
-            value={formDataUser.password}
-            onChange={(e) => setFormDataUser({ ...formDataUser, password: e.target.value })}
-            required
-          />
-        </div>
-
-        <button type="submit">Ingresar</button>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        {success && <p style={{ color: "green" }}>{success}</p>}
-      </form>
+        
     </div>
   </>
   );
