@@ -1,0 +1,61 @@
+
+body {
+  background-image: url("../../public/fondoCeleste.jpg");
+  background-repeat: repeat;
+  background-size: auto;
+}
+
+#register h2, #register p, #register button {
+    text-align: center;
+    color:  #2c5f8a;
+}
+
+#register {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80vh; /* altura de la ventana para centralizar el contenedor */
+
+}
+
+#register .register-container {
+
+  width: 400px;
+  max-height: 500px;
+  padding: 2.5rem;
+
+  background-color: #dff3ff;
+  border-radius: 20px;
+  box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+#register h2, #register p {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+label{
+    display: flex;
+    margin-top: 1rem;
+    color:  #2c5f8a;
+}
+
+button {
+  margin-top: 1rem;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  padding: 12px;
+  background-color: #3b82b8;
+  color: #ffffff !important;
+  border: none;
+  border-radius: 18px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid #3b82b8;
+  outline: none;
+}
