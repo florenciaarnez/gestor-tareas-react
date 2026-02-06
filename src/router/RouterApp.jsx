@@ -6,16 +6,18 @@ import {Login} from "../views/Login"
 import {ErrorPage} from "../views/ErrorPage"
 import {Register} from "../views/Register"
 import { ProtectedRoute } from "../components/protectedRoute.jsx"
-
+import { PublicRoute } from "../components/publicRoute.jsx"
 const RouterApp = () => {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/about" element={<About />} />
-        <Route path="/registrarme" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
+        <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
         <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
         <Route path="/*" element={<ErrorPage/>} />
+
+
       </Routes>
     </BrowserRouter>
   )
