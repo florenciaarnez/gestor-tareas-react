@@ -1,28 +1,41 @@
 import { Link } from "react-router-dom";
 import "../styles/components/Header.css"
+import { useAuth } from '../context/authContext.jsx';
 
 const Navbar = () => {
+  const { logout, user } = useAuth();
   return (
     <nav className="navbar">
       <h1 className="logo">My Tasks</h1>
 
       <ul className="nav-links">
         <li>
-          <Link to="/">Home</Link>
+          {user && <button>
+            <Link to="/">Home</Link>
+          </button>}
         </li>
         {/* <li>
           <Link to="/tareas">Mis tareas</Link>
         </li> */}
         <li>
-          <Link to="/about">About Us</Link>
+          <button>
+            {<Link to="/about">Sobre Nosotros</Link>}
+          </button>
         </li>
         <li>
-          <Link to="/login">Login</Link>
+          <button>
+            <Link to="/login">{user ? `Bienvenid@ ${user.name}` : "Iniciar sesion"}</Link>
+          </button>
         </li>
         <li>
-          <Link to="/registrarme">
-            Registrarme
-          </Link>
+          {!user &&<button>
+            <Link to="/registrarme">
+              Registrarme
+            </Link>
+          </button>}
+        </li>
+        <li>
+          {user && <button id="logout" onClick={logout}>cerrar sesion</button>}
         </li>
       </ul>
     </nav>
