@@ -51,7 +51,7 @@ button {
   border-radius: 18px;
 }
 
-input {
+input, textarea {
   width: 100%;
   padding: 10px;
   border-radius: 12px;
