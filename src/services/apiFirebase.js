@@ -1,22 +1,27 @@
-import { addDoc, collection, getDocs, updateDoc, doc, deleteDoc } from "firebase/firestore"
+import { addDoc, collection, getDocs, updateDoc, doc, deleteDoc, query, where } from "firebase/firestore"
 import { db } from "../config/firebase.js"
-import { getAuth } from "firebase/auth";
 
 //llamo a la coleccion de tareas
 const TasksCollection = collection(db, "tasks")
 
-const getTasksUser = async () => {
-    const auth = getAuth();
-    const user = auth.currentUser;
+const getTasksComplete = async (uid) => {
 
-    if (user) {
-        const q = query(TasksCollection, where("userId", "==", user.uid));
-        const querySnapshot = await getDocs(q);
+        const queryUserTasks = query(TasksCollection, where("userId", "==", uid), where("complete", "==", true));
+        const querySnapshot = await getDocs(queryUserTasks);
         return querySnapshot.docs.map(doc => ({
             id: doc.id,
             ...doc.data()
         }));
-    }
+    
+}
+
+const getTasksInProgress = async (uid) => {
+    const queryUserTasks = query(TasksCollection, where("userId", "==", uid), where("complete", "==", false));
+    const querySnapshot = await getDocs(queryUserTasks);
+    return querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+    }));
 }
 
 const addTask = async (task) => {
@@ -42,4 +47,4 @@ const deleteTask = async (id) => {
   return id
 }
 
-export {addTask,getTasksUser, updateTask, deleteTask}
+export {addTask, getTasksComplete, getTasksInProgress, updateTask, deleteTask}
