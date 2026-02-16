@@ -1,4 +1,4 @@
-.taskForm {
+.pageHome .taskForm {
     width: auto;
   padding: 20px;
   gap: 20px;
@@ -6,6 +6,15 @@
   background-image: url("../../public/fondohojapapel.webp");
   border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.pageHome input, .pageHome textarea {
+    border: 2px solid #C24C6B;
+    border-radius: 10px;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
 }
 
 #newTaskButton {
@@ -28,7 +37,7 @@
     column-count: 4;
 }
 
-h3, p{
+.pageHome h3, .pageHome p {
     color: #C24C6B;
 }
 
