@@ -77,12 +77,30 @@ const Home = () => {
   return (
     <>
       <Navbar />
-      <div className="page Home">
+      {/* Header */}
+      <div className="pageHome">
+        <header className="header">
+          <div className="headerContent">
+
+            <div className="logoContainer">
+              <img src="/tl.webp" alt="logo gestor" className="logo" />
+              <h1>Gestor de Tareas</h1>
+            </div>
+
+            <p className="subtitle">
+              Organiza tu día con claridad y enfócate en lo importante.
+            </p>
+
+            <button 
+              id="newTaskButton" 
+              onClick={() => setShowForm(!showForm)}
+            >
+              {showForm ? "Cancelar" : "Nueva tarea"}
+            </button>
+          </div>
+       </header>
         <div id="tasksContainer">
-          {/* FORM IZQUIERDO */}
-          <button id="newTaskButton" onClick={() => setShowForm(!showForm)}>
-            {showForm ? "Cancelar" : "Nueva tarea"}
-          </button>
+          {/* Form */}
           {showForm && (
             <form className="taskForm" onSubmit={handleSubmit}>
               <h3>Nueva tarea</h3>
@@ -94,7 +112,7 @@ const Home = () => {
             onChange={handleChange}
             required
             />
-            <br />
+
             <textarea 
             placeholder="Descripción" 
             name="task"
@@ -102,14 +120,14 @@ const Home = () => {
             onChange={handleChange}
             required
             ></textarea>
-
-            <p>fecha limite: <input type="date"
+            <br />
+            <p>fecha limite: </p><input type="date"
              name="deadLine" 
              value={formData.deadLine}
              onChange={handleChange}
              required
              />
-            </p>
+        
             <br />
             <input type="hidden" 
             name="creationDate" 
@@ -120,7 +138,9 @@ const Home = () => {
 
             <button type="submit">Agregar</button>
           </form>
-        )}
+
+
+         )}
           <div className="tasks">
             <p>Zona de tareas</p>
           </div>
