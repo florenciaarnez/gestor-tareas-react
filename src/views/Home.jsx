@@ -3,7 +3,7 @@ import '../styles/views/home.css'
 import { Navbar } from "../components/header";
 import { getTasksComplete, getTasksInProgress, addTask, updateTask, deleteTask} from "../services/apiFirebase.js";
 import { useAuth } from "../context/authContext.jsx";
-import { serverTimestamp } from "firebase/firestore";
+import { serverTimestamp, Timestamp} from "firebase/firestore";
 
 const Home = () => {
 
@@ -57,8 +57,9 @@ const Home = () => {
         task: formData.task,
         creationDate: formData.creationDate,
         complete: formData.complete,
-        deadLine: formData.deadLine
+        deadLine: Timestamp.fromDate(new Date(formData.deadLine)),
       })
+    console.log("Tarea agregada:", addedTask);
 
       setTasks([addedTask, ...tasks])
       setFormData({
@@ -141,50 +142,27 @@ const Home = () => {
 
 
          )}
-          <div className="tasks">
-            <p>Zona de tareas</p>
-          </div>
-          <div className="tasks">
-            <h3>Titulo de la tarea</h3>
-            <p>ESTE seria el lugfar dond escribis tu tarea tengo que ver que entre todo perfecto</p>
+         {tasksInProgress.map((task) =>(
+          <div className="tasks" key={task.id}>
+            <h3>{task.titleTask}</h3>
+            <p>{task.task}</p>
             <br></br>
             <div id="dates">
-              <div class="date">
-                <p>Fecha de creación: 22/05/26</p>
+              <div className="date">
+                <p>Fecha de creación: {task.creationDate?.toLocaleDateString()}</p>
               </div>
-               <div class="date">
-                  <p>Fecha LIMITE: 22/05/26</p>
+               <div className="date">
+                  <p>Fecha LIMITE: {task.deadLine?.toLocaleDateString()}</p>
                </div>
-             
             </div>
-           
+           <button 
+              id="EditButton" 
+              onClick={() => setShowForm(!showForm)}
+            >Editar
+            </button>
           </div>
-          <div className="tasks">
-            <h3>Titulo de la tarea</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea comm</p>
-          </div>
-           <div className="tasks">
-            <p>Zona de tareas</p>
-          </div>
-          <div className="tasks">
-            <h3>Titulo de la tarea</h3>
-            <p>ESTE seria el lugfar dond escribis tu tarea tengo que ver que entre todo perfecto</p>
-          </div>
-          <div className="tasks">
-            <h3>Titulo de la tarea</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea comm</p>
-          </div>
-          
-          <div className="tasks">
-            <h3>Titulo de la tarea</h3>
-            <p>ESTE seria el lugfar dond escribis tu tarea tengo que ver que entre todo perfecto</p>
-          </div>
-          <div className="tasks">
-            <h3>Titulo de la tarea</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea comm</p>
-          </div>
-
-
+         ))}
+        
         </div>
       </div>
     </>
