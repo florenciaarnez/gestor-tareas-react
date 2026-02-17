@@ -1,8 +1,6 @@
-import { addDoc, collection, getDocs, updateDoc, doc, deleteDoc, query, where } from "firebase/firestore"
+import { addDoc, collection, getDocs, updateDoc, doc, deleteDoc, query, where, orderBy } from "firebase/firestore"
 import { db } from "../config/firebase.js"
-
-//llamo a la coleccion de tareas
-const TasksCollection = collection(db, "tasks")
+import { serverTimestamp } from "firebase/firestore";
 
 const getTasksComplete = async (uid) => {
 
@@ -10,19 +8,23 @@ const getTasksComplete = async (uid) => {
         const querySnapshot = await getDocs(queryUserTasks);
         return querySnapshot.docs.map(doc => ({
             id: doc.id,
-            ...doc.data()
+            ...doc.data(),
+            creationDate: doc.data().creationDate?.toDate(),
+            deadLine: doc.data().deadLine?.toDate()
         }));
     
 }
 
 const getTasksInProgress = async (uid) => {
-    const queryUserTasks = query(TasksCollection, where("userId", "==", uid), where("complete", "==", false));
+    const queryUserTasks = query(TasksCollection, where("userId", "==", uid), where("complete", "==", false), orderBy("deadLine", "asc"));
     const querySnapshot = await getDocs(queryUserTasks);
     return querySnapshot.docs.map(doc => ({
         id: doc.id,
-        ...doc.data()
-    }));
-}
+        ...doc.data(),
+         creationDate: doc.data().creationDate?.toDate(),
+         deadLine: doc.data().deadLine?.toDate()
+    }))
+  };
 
 const addTask = async (task) => {
     const docRef = await addDoc(TasksCollection, task)
