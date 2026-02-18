@@ -10,6 +10,7 @@ const Home = () => {
   const { user } = useAuth(); 
   const [tasks, setTasks] = useState([]);
   const [tasksInProgress, setTasksInProgress] = useState([]);
+  const [editingTask, setEditingTask] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     userId: user.uid,
@@ -55,6 +56,23 @@ const Home = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const TaskToSave = {
+      userId: formData.userId,
+      titleTask: formData.titleTask,
+      task: formData.task,
+      creationDate: formData.creationDate,
+      complete: formData.complete,
+      deadLine: Timestamp.fromDate(new Date(formData.deadLine + "T12:00:00")),
+    };
+    if (editingTask){
+      const res = await updateTask(editingTask, TaskToSave)
+      const updatedTask = tasks.map(t =>
+      t.id === editingTask ? res : t)
+      setTasks(updatedTask)
+      setEditingTask(null)
+
+    } else{
       const addedTask = await addTask({
         userId: formData.userId,
         titleTask: formData.titleTask,
@@ -63,6 +81,7 @@ const Home = () => {
         complete: formData.complete,
         deadLine: Timestamp.fromDate(new Date(formData.deadLine + "T12:00:00")),
       })
+
     console.log("Tarea agregada:", addedTask);
 
       setTasks([addedTask, ...tasks])
@@ -76,8 +95,19 @@ const Home = () => {
       })
       fetchingData(user.uid);
     }
+  }
 
-
+  const handleUpdateTask = (task) => {
+    setFormData({
+      userId: task.userId,
+      titleTask: task.titleTask,
+      task: task.task,
+      creationDate: task.creationDate,
+      complete: task.complete,
+      deadLine: task.deadLine ? task.deadLine.toISOString().slice(0, 10) : "",
+    })
+    setEditingTask(task.id)
+  }
 
   return (
     <>
@@ -164,7 +194,10 @@ const Home = () => {
            <div id="buttons">
               <button 
                   id="EditButton" 
-                  onClick={() => setShowForm(!showForm)}
+                  onClick={() => {setShowForm(!showForm);
+                      handleUpdateTask(task);
+                      console.log("Tarea a editar:", editingTask);
+                  }}
                 >Editar
                 </button>
               
