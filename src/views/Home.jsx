@@ -19,6 +19,10 @@ const Home = () => {
     complete: false,
     deadLine: ""
   })
+
+  const statusTitle = "En Progreso"
+  const statusIcon = "🚀"
+
   const fetchingData = async (uid) => {
     try{
       const tasks = await getTasksComplete(uid);
@@ -57,7 +61,7 @@ const Home = () => {
         task: formData.task,
         creationDate: formData.creationDate,
         complete: formData.complete,
-        deadLine: Timestamp.fromDate(new Date(formData.deadLine)),
+        deadLine: Timestamp.fromDate(new Date(formData.deadLine + "T12:00:00")),
       })
     console.log("Tarea agregada:", addedTask);
 
@@ -144,6 +148,8 @@ const Home = () => {
          )}
          {tasksInProgress.map((task) =>(
           <div className="tasks" key={task.id}>
+            <div className="status">{statusIcon} {statusTitle}</div>
+
             <h3>{task.titleTask}</h3>
             <p>{task.task}</p>
             <br></br>
@@ -155,14 +161,26 @@ const Home = () => {
                   <p>Fecha LIMITE: {task.deadLine?.toLocaleDateString()}</p>
                </div>
             </div>
-           <button 
-              id="EditButton" 
+           <div id="buttons">
+              <button 
+                  id="EditButton" 
+                  onClick={() => setShowForm(!showForm)}
+                >Editar
+                </button>
+              
+                <button 
+                  id="CompleteButton" 
+                  onClick={() => setShowForm(!showForm)}
+                >Hecho
+                </button>
+            </div>
+            <button 
+              id="DeleteButton" 
               onClick={() => setShowForm(!showForm)}
-            >Editar
+            >Eliminar
             </button>
           </div>
          ))}
-        
         </div>
       </div>
     </>
