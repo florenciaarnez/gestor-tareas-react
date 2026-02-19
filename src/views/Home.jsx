@@ -12,6 +12,7 @@ const Home = () => {
   const [tasksInProgress, setTasksInProgress] = useState([]);
   const [editingTask, setEditingTask] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [showButton, setShowButton] = useState(true);
   const [formData, setFormData] = useState({
     userId: user.uid,
     titleTask: "",
@@ -23,6 +24,10 @@ const Home = () => {
 
   const statusTitle = "En Progreso"
   const statusIcon = "🚀"
+  const statusTitleComplete = "Completada"
+  const statusIconComplete = "✅"
+  const statusTitleOverdue = "Atrasada"
+  const statusIconOverdue = "⏰"
 
   const fetchingData = async (uid) => {
     try{
@@ -47,6 +52,10 @@ const Home = () => {
     }
   }, [user]);
 
+  useEffect(()=>{
+    console.log("editingTask cambió:", editingTask);
+  }, [editingTask]
+)
   // agregar nueva tareaaa
 
   const handleChange = (e) => {
@@ -65,7 +74,8 @@ const Home = () => {
       complete: formData.complete,
       deadLine: Timestamp.fromDate(new Date(formData.deadLine + "T12:00:00")),
     };
-    if (editingTask){
+    
+    if (editingTask !== null) {
       const res = await updateTask(editingTask, TaskToSave)
       const updatedTask = tasks.map(t =>
       t.id === editingTask ? res : t)
@@ -81,10 +91,9 @@ const Home = () => {
         complete: formData.complete,
         deadLine: Timestamp.fromDate(new Date(formData.deadLine + "T12:00:00")),
       })
-
-    console.log("Tarea agregada:", addedTask);
-
       setTasks([addedTask, ...tasks])
+    }
+    
       setFormData({
         userId: user.uid,
         titleTask: "",
@@ -94,7 +103,6 @@ const Home = () => {
         deadLine: ""
       })
       fetchingData(user.uid);
-    }
   }
 
   const handleUpdateTask = (task) => {
@@ -106,7 +114,7 @@ const Home = () => {
       complete: task.complete,
       deadLine: task.deadLine ? task.deadLine.toISOString().slice(0, 10) : "",
     })
-    setEditingTask(task.id)
+        setEditingTask(task.id);
   }
 
   return (
@@ -125,13 +133,18 @@ const Home = () => {
             <p className="subtitle">
               Organiza tu día con claridad y enfócate en lo importante.
             </p>
-
-            <button 
+            {showButton && (
+              <>
+              <button 
               id="newTaskButton" 
-              onClick={() => setShowForm(!showForm)}
+              onClick={() => {if (!editingTask) {setShowForm(!showForm), setShowButton(!showButton)}}
+            }
             >
-              {showForm ? "Cancelar" : "Nueva tarea"}
+              Nueva tarea
             </button>
+            </>
+            )}
+            
           </div>
        </header>
         <div id="tasksContainer">
@@ -171,7 +184,12 @@ const Home = () => {
             required
             />
 
-            <button type="submit">Agregar</button>
+            <button type="submit">{editingTask ? "Actualizar" : "Agregar"}</button>
+            <button id= "cancelButton" onClick={() => {
+              setShowForm(false);
+              setShowButton(true);
+              setEditingTask(null);
+            }}>Cancelar</button>
           </form>
 
 
@@ -194,16 +212,24 @@ const Home = () => {
            <div id="buttons">
               <button 
                   id="EditButton" 
-                  onClick={() => {setShowForm(!showForm);
+                  onClick={() => {
+                    if (!showForm) {
+                      setShowForm(!showForm);
                       handleUpdateTask(task);
-                      console.log("Tarea a editar:", editingTask);
-                  }}
-                >Editar
-                </button>
-              
+                      setEditingTask(task.id);
+                  } else {
+           
+                    handleUpdateTask(task);
+                      setEditingTask(task.id);
+                    }
+
+                        console.log("Tarea a editar:", editingTask);
+                    }}
+                >Editar</button>
+
                 <button 
                   id="CompleteButton" 
-                  onClick={() => setShowForm(!showForm)}
+                  onClick={() => handleUpdateTask({...task, complete: true})}
                 >Hecho
                 </button>
             </div>
