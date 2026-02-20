@@ -3,6 +3,7 @@ import { Navbar } from "../components/header";
 import { useState } from "react";
 import { useAuth } from '../context/authContext.jsx';
 
+
 const Login = () => {
     const [formDataUser, setFormDataUser] = useState({
     email: "",
@@ -12,15 +13,18 @@ const Login = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
-   const { login } = useAuth();
-   
+   const { login, user } = useAuth();
+
+
     const handleSubmit = async (e) => {
     e.preventDefault(); // evita que se recargue la página
-    
+
     try{
-      await login(formDataUser.email, formDataUser.password);
-      setError(null); // Limpiar errores previos si la creación fue exitosa
+      const userCredential = await login(formDataUser.email, formDataUser.password);
+      setError(null); 
       setSuccess("Usuario logueado exitosamente");
+
+      const userloged = userCredential.user;
     }
     catch(error){
       console.error("Usuario o contraseña incorrectos:", error);
