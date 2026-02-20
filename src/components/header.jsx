@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import "../styles/components/Header.css"
 import { useAuth } from '../context/authContext.jsx';
 
-const Navbar = () => {
+const Navbar = ({setStatus}) => {
   const { logout, user } = useAuth();
   return (
     <nav className="navbar">
@@ -10,26 +10,34 @@ const Navbar = () => {
 
       <ul className="nav-links">
         <li>
-          {user && <button>
+          {user && <button onClick={() => setStatus("progress")}>
             <Link to="/">Home</Link>
           </button>}
         </li>
-        {/* <li>
-          <Link to="/tareas">Mis tareas</Link>
-        </li> */}
+        <li>
+             { user && <button onClick ={()=> setStatus("complete")}>Completadas
+          </button>}
+        </li>
+        <li>
+
+          { user && <button onClick ={()=> setStatus("overdue")}>Atrasadas
+          </button>}
+        </li>
         <li>
           <button>
             {<Link to="/about">Sobre Nosotros</Link>}
           </button>
         </li>
         <li>
-          <button>
-            <Link to="/login">{user ? `Bienvenid@ ${user.name}` : "Iniciar sesion"}</Link>
-          </button>
+          {!user && (
+            <button>
+              <Link to="/login"> Iniciar sesion</Link>
+            </button>
+          )}
         </li>
         <li>
           {!user &&<button>
-            <Link to="/registrarme">
+            <Link to="/register">
               Registrarme
             </Link>
           </button>}
