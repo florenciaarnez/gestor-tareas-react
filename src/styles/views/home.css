@@ -107,3 +107,53 @@
     margin: 5px;
     border: 2px solid #3b82b8;
 }
+
+.tasksOld{
+   position: relative;
+   width: auto;
+   padding: 20px;
+   min-height: 300px;
+   border-radius: 20px;
+   height: fit-content;
+   margin-bottom: 20px;
+   break-inside: avoid;
+   background-color: #3b82b8;
+   background-repeat: repeat;
+   background-size: auto;
+    box-shadow:
+   0 2px 3px rgba(0,0,0,0.08),
+   0 8px 20px rgba(0,0,0,0.12);
+}
+
+
+
+
+
+
+
+.tasksOld h3, .tasksOld h1, .tasksOld p {
+   color: #fff;
+}
+.tasksOld .date{
+   background-color: #044475;
+   border-radius: 10px;
+   padding: 5px;
+   margin: 5px;
+   border: 2px solid white;
+}
+
+
+
+
+.tasksOld::before {
+ content: "";
+ position: absolute;
+ top: -10px;
+ left: 50%;
+ transform: translateX(-50%);
+ width: 15px;
+ height: 15px;
+ background: #cc0e0e;
+ border-radius: 50%;
+ box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
