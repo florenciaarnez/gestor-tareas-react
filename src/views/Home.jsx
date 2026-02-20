@@ -123,6 +123,7 @@ const Home = () => {
    }
  }
 
+
 const filteredTasks = tasksInProgress.filter(task => {
   if (status === "complete") {
     return task.complete;
@@ -136,6 +137,21 @@ const filteredTasks = tasksInProgress.filter(task => {
     return !task.complete && task.deadLine < new Date()
   };
 });
+
+const handleCheckTask = async (task) => {
+  try {
+    const updatedStatus = !task.complete;
+    await updateTask(task.id, { ...task, complete: updatedStatus });
+
+    const newTasks = tasksInProgress.map(t => 
+      t.id === task.id ? { ...t, complete: updatedStatus } : t
+    );
+    setTasksInProgress(newTasks);
+    
+  } catch (error) {
+    console.error("Error al actualizar la tarea:", error);
+  }
+};
 
   return (
     <>
@@ -166,15 +182,18 @@ const filteredTasks = tasksInProgress.filter(task => {
             )}
             <div id="filterbuttons">
             <li>
-              <button onClick ={()=> setStatus("complete")}>Completadas
+              <button onClick ={()=> setStatus("complete")}
+                className={status === "complete" ? "activebutton" : ""}>Completadas 
               </button>
             </li>
             <li>
-              <button onClick ={()=> setStatus("progress")}>Por hacer
+              <button onClick ={()=> setStatus("progress")}
+                className={status === "progress" ? "activebutton" : ""}>Por hacer
               </button>
             </li>
              <li>
-              <button onClick ={()=> setStatus("overdue")}>Atrasadas
+              <button onClick ={()=> setStatus("overdue")}
+                className={status === "overdue" ? "activebutton" : ""}>Atrasadas
               </button>
             </li>
             </div>
@@ -240,7 +259,7 @@ const filteredTasks = tasksInProgress.filter(task => {
          )}
          {filteredTasks.map((task) =>(
 
-          <div className={task.deadLine < new Date()? "tasksOld" : "tasks"} key={task.id}>
+          <div className={task.deadLine < new Date() && task.complete !== true? "tasksOld" : "tasks"} key={task.id}>
             <div className="status">{task.deadLine>new Date() ? statusIcon : statusIconOverdue} {task.deadLine>new Date() ? statusTitle : statusTitleOverdue}</div>
 
             <h3>{task.titleTask}</h3>
@@ -275,8 +294,10 @@ const filteredTasks = tasksInProgress.filter(task => {
 
                 <button 
                   id="CompleteButton" 
-                  onClick={() => handleCheckTask(task.id)}
-                >Hecho
+                  onClick={() => {
+                    handleCheckTask(task);
+                  }}
+                >{task.complete=== false ? "Hecho" : "Deshacer"}
                 </button>
             </div>
             <button 
