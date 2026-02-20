@@ -3,7 +3,7 @@ import '../styles/views/home.css'
 import { Navbar } from "../components/header";
 import { getTasksInProgress, addTask, updateTask, deleteTask} from "../services/apiFirebase.js";
 import { useAuth } from "../context/authContext.jsx";
-import { serverTimestamp, Timestamp} from "firebase/firestore";
+
 
 const Home = () => {
 
@@ -136,6 +136,7 @@ const filteredTasks = tasksInProgress.filter(task => {
     return !task.complete && task.deadLine < new Date()
   };
 });
+
   return (
     <>
       <Navbar setStatus={setStatus} />
@@ -163,7 +164,20 @@ const filteredTasks = tasksInProgress.filter(task => {
             </button>
             </>
             )}
-            
+            <div id="filterbuttons">
+            <li>
+              <button onClick ={()=> setStatus("complete")}>Completadas
+              </button>
+            </li>
+            <li>
+              <button onClick ={()=> setStatus("progress")}>Por hacer
+              </button>
+            </li>
+             <li>
+              <button onClick ={()=> setStatus("overdue")}>Atrasadas
+              </button>
+            </li>
+            </div>
           </div>
        </header>
         <div id="tasksContainer">
@@ -194,14 +208,17 @@ const filteredTasks = tasksInProgress.filter(task => {
              onChange={handleChange}
              required
              />
-        
-            <br />
-            <input type="hidden" 
-            name="creationDate" 
-            value="okis" 
-            onChange={handleChange}
-            required
-            />
+          <p>¿Tarea completada?</p>
+            <select
+              name="complete"
+              value={formData.complete}
+              onChange={(e) =>
+                setFormData({ ...formData, complete: e.target.value === "true" })
+              }
+            >
+              <option value="false">No</option>
+              <option value="true">Sí</option>
+            </select>
             {/* CHECK    //"✅"*/}
             <button type="submit">{editingTask ? "Actualizar" : "Agregar"}</button>
             <button id= "cancelButton" type="button" onClick={() => {
@@ -258,7 +275,7 @@ const filteredTasks = tasksInProgress.filter(task => {
 
                 <button 
                   id="CompleteButton" 
-                  onClick={() => handleUpdateTask({...task, complete: true})}
+                  onClick={() => handleCheckTask(task.id)}
                 >Hecho
                 </button>
             </div>
@@ -273,6 +290,6 @@ const filteredTasks = tasksInProgress.filter(task => {
       </div>
     </>
   );
-};
+;}
 
 export { Home };

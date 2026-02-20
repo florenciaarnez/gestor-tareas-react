@@ -10,17 +10,8 @@ const Navbar = ({setStatus}) => {
 
       <ul className="nav-links">
         <li>
-          {user && <button onClick={() => setStatus("progress")}>
+          {user && <button>
             <Link to="/">Home</Link>
-          </button>}
-        </li>
-        <li>
-             { user && <button onClick ={()=> setStatus("complete")}>Completadas
-          </button>}
-        </li>
-        <li>
-
-          { user && <button onClick ={()=> setStatus("overdue")}>Atrasadas
           </button>}
         </li>
         <li>
