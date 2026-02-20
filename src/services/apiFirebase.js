@@ -3,21 +3,8 @@ import { db } from "../config/firebase.js"
 
 const TasksCollection = collection(db, "tasks");
 
-const getTasksComplete = async (uid) => {
-
-        const queryUserTasks = query(TasksCollection, where("userId", "==", uid), where("complete", "==", true));
-        const querySnapshot = await getDocs(queryUserTasks);
-        return querySnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data(),
-            creationDate: doc.data().creationDate?.toDate(),
-            deadLine: doc.data().deadLine?.toDate()
-        }));
-    
-}
-
 const getTasksInProgress = async (uid) => {
-    const queryUserTasks = query(TasksCollection, where("userId", "==", uid), where("complete", "==", false), orderBy("deadLine", "asc"));
+    const queryUserTasks = query(TasksCollection, where("userId", "==", uid), orderBy("deadLine", "asc"));
     const querySnapshot = await getDocs(queryUserTasks);
     return querySnapshot.docs.map(doc => ({
         id: doc.id,
@@ -50,4 +37,4 @@ const deleteTask = async (id) => {
   return 
 }
 
-export {addTask, getTasksComplete, getTasksInProgress, updateTask, deleteTask}
+export {addTask, getTasksInProgress, updateTask, deleteTask}
