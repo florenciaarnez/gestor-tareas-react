@@ -91,6 +91,7 @@ const Home = () => {
       })
 
         setShowForm(false)
+        setShowButton(true)
   }
 
   const handleUpdateTask = (task) => {
@@ -104,6 +105,24 @@ const Home = () => {
     })
         setEditingTask(task.id);
   }
+
+  const handleDeleteTask = async (id) => {
+   try {
+     if (!confirm("¿Seguro que deseas borrar la tarea?")) {
+       return
+     }
+
+
+     const idDeletedTask = await deleteTask(id)
+     alert(`Tarea borrada con éxito`)
+     const filteredTasks = tasksInProgress.filter(t => t.id !== id)
+     setTasksInProgress(filteredTasks)
+
+
+   } catch (error) {
+     console.log(error)
+   }
+ }
 
   return (
     <>
