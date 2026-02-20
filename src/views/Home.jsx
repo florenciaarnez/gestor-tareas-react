@@ -20,6 +20,7 @@ const Home = () => {
     complete: false,
     deadLine: ""
   })  
+  const [status, setStatus] = useState("progress");
   const statusTitle = "En Progreso"
   const statusIcon = "🚀"
   const statusTitleOverdue = "Atrasada"
@@ -122,9 +123,22 @@ const Home = () => {
    }
  }
 
+const filteredTasks = tasksInProgress.filter(task => {
+  if (status === "complete") {
+    return task.complete;
+  };
+
+  if (status === "progress") {
+    return !task.complete && new Date()<task.deadLine || !task.complete && new Date()>task.deadLine
+  };
+
+  if (status === "overdue") {
+    return !task.complete && task.deadLine < new Date()
+  };
+});
   return (
     <>
-      <Navbar />
+      <Navbar setStatus={setStatus} />
       {/* Header */}
       <div className="pageHome">
         <header className="header">
@@ -207,7 +221,7 @@ const Home = () => {
 
 
          )}
-         {tasksInProgress.map((task) =>(
+         {filteredTasks.map((task) =>(
 
           <div className={task.deadLine < new Date()? "tasksOld" : "tasks"} key={task.id}>
             <div className="status">{task.deadLine>new Date() ? statusIcon : statusIconOverdue} {task.deadLine>new Date() ? statusTitle : statusTitleOverdue}</div>
@@ -220,7 +234,7 @@ const Home = () => {
                 <p>Fecha de creación: {task.creationDate?.toLocaleDateString()}</p>
               </div>
                <div className="date">
-                  <p>Fecha LIMITE: {task.deadLine?.toLocaleDateString()}</p>
+                  <p>Fecha limite: {task.deadLine?.toLocaleDateString()}</p>
                </div>
             </div>
            <div id="buttons">
