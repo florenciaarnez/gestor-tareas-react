@@ -19,12 +19,9 @@ const Home = () => {
     creationDate: new Date(),
     complete: false,
     deadLine: ""
-  })
-
+  })  
   const statusTitle = "En Progreso"
   const statusIcon = "🚀"
-  const statusTitleComplete = "Completada"
-  const statusIconComplete = "✅"
   const statusTitleOverdue = "Atrasada"
   const statusIconOverdue = "⏰"
 
@@ -66,6 +63,7 @@ const Home = () => {
       const res = await updateTask(editingTask, TaskToSave)
       const updatedTask = tasksInProgress.map(t =>
       t.id === editingTask ? { ...t, ...res } : t)
+      .sort((a, b) => a.deadLine - b.deadLine)
       setTasksInProgress(updatedTask)
       setEditingTask(null)
 
@@ -210,8 +208,9 @@ const Home = () => {
 
          )}
          {tasksInProgress.map((task) =>(
-          <div className="tasks" key={task.id}>
-            <div className="status">{statusIcon} {statusTitle}</div>
+
+          <div className={task.deadLine < new Date()? "tasksOld" : "tasks"} key={task.id}>
+            <div className="status">{task.deadLine>new Date() ? statusIcon : statusIconOverdue} {task.deadLine>new Date() ? statusTitle : statusTitleOverdue}</div>
 
             <h3>{task.titleTask}</h3>
             <p>{task.task}</p>
