@@ -1,6 +1,7 @@
-import { addDoc, collection, getDocs, updateDoc, doc, deleteDoc, query, where, orderBy } from "firebase/firestore"
+import { addDoc, collection, getDocs, updateDoc, doc, deleteDoc, query, where, orderBy, Timestamp } from "firebase/firestore"
 import { db } from "../config/firebase.js"
-import { serverTimestamp } from "firebase/firestore";
+
+const TasksCollection = collection(db, "tasks");
 
 const getTasksComplete = async (uid) => {
 
@@ -27,26 +28,26 @@ const getTasksInProgress = async (uid) => {
   };
 
 const addTask = async (task) => {
-    const docRef = await addDoc(TasksCollection, task)
+    const docRef = await addDoc(TasksCollection, {...task, creationDate: Timestamp.fromDate(task.creationDate), deadLine: Timestamp.fromDate(task.deadLine)});
     return {
         id: docRef.id,
-        ...task
+        ...task,
     }
 }
 
 const updateTask = async (id, updates) => {
   const task = doc(db, "tasks", id)
-  await updateDoc(task, updates)
+  await updateDoc(task,{ ...updates, deadLine: Timestamp.fromDate(updates.deadLine) })
   return {
     id,
-    ...updates
+    ...updates,
   }
 }
 
 const deleteTask = async (id) => {
   const task = doc(db, "tasks", id)
   await deleteDoc(task)
-  return id
+  return 
 }
 
 export {addTask, getTasksComplete, getTasksInProgress, updateTask, deleteTask}

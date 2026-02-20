@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 import '../styles/views/home.css'
 import { Navbar } from "../components/header";
-import { getTasksComplete, getTasksInProgress, addTask, updateTask, deleteTask} from "../services/apiFirebase.js";
+import { getTasksInProgress, addTask, updateTask, deleteTask} from "../services/apiFirebase.js";
 import { useAuth } from "../context/authContext.jsx";
 import { serverTimestamp, Timestamp} from "firebase/firestore";
 
 const Home = () => {
 
   const { user } = useAuth(); 
-  const [tasks, setTasks] = useState([]);
   const [tasksInProgress, setTasksInProgress] = useState([]);
   const [editingTask, setEditingTask] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -17,7 +16,7 @@ const Home = () => {
     userId: user.uid,
     titleTask: "",
     task: "",
-    creationDate: serverTimestamp(),
+    creationDate: new Date(),
     complete: false,
     deadLine: ""
   })
@@ -31,11 +30,6 @@ const Home = () => {
 
   const fetchingData = async (uid) => {
     try{
-      const tasks = await getTasksComplete(uid);
-      console.log("Buscando tareas para el UID:", uid);
-      setTasks(tasks);
-      console.log("Tareas obtenidas:", tasks);
-      console.log("usuario", user)
 
       const tasksinprogres= await getTasksInProgress(uid);
       setTasksInProgress(tasksinprogres);
@@ -52,12 +46,6 @@ const Home = () => {
     }
   }, [user]);
 
-  useEffect(()=>{
-    console.log("editingTask cambió:", editingTask);
-  }, [editingTask]
-)
-  // agregar nueva tareaaa
-
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData({ ...formData, [name]: value })
@@ -70,16 +58,15 @@ const Home = () => {
       userId: formData.userId,
       titleTask: formData.titleTask,
       task: formData.task,
-      creationDate: formData.creationDate,
       complete: formData.complete,
-      deadLine: Timestamp.fromDate(new Date(formData.deadLine + "T12:00:00")),
+      deadLine: new Date(formData.deadLine + "T12:00:00"),
     };
-    
+
     if (editingTask !== null) {
       const res = await updateTask(editingTask, TaskToSave)
-      const updatedTask = tasks.map(t =>
-      t.id === editingTask ? res : t)
-      setTasks(updatedTask)
+      const updatedTask = tasksInProgress.map(t =>
+      t.id === editingTask ? { ...t, ...res } : t)
+      setTasksInProgress(updatedTask)
       setEditingTask(null)
 
     } else{
@@ -89,20 +76,21 @@ const Home = () => {
         task: formData.task,
         creationDate: formData.creationDate,
         complete: formData.complete,
-        deadLine: Timestamp.fromDate(new Date(formData.deadLine + "T12:00:00")),
+        deadLine: new Date(formData.deadLine + "T12:00:00"),
       })
-      setTasks([addedTask, ...tasks])
+      setTasksInProgress([addedTask, ...tasksInProgress])
     }
     
       setFormData({
         userId: user.uid,
         titleTask: "",
         task: "",
-        creationDate: serverTimestamp(),
+        creationDate: new Date (),
         complete: false,
         deadLine: ""
       })
-      fetchingData(user.uid);
+
+        setShowForm(false)
   }
 
   const handleUpdateTask = (task) => {
@@ -132,7 +120,7 @@ const Home = () => {
 
             <p className="subtitle">
               Organiza tu día con claridad y enfócate en lo importante.
-            </p>
+            </p> 
             {showButton && (
               <>
               <button 
@@ -183,12 +171,20 @@ const Home = () => {
             onChange={handleChange}
             required
             />
-
+            {/* CHECK    //"✅"*/}
             <button type="submit">{editingTask ? "Actualizar" : "Agregar"}</button>
-            <button id= "cancelButton" onClick={() => {
+            <button id= "cancelButton" type="button" onClick={() => {
               setShowForm(false);
               setShowButton(true);
               setEditingTask(null);
+               setFormData({
+                        userId: user.uid,
+                        titleTask: "",
+                        task: "",
+                        creationDate: new Date(),
+                        complete: false,
+                        deadLine: ""
+                      })
             }}>Cancelar</button>
           </form>
 
@@ -217,6 +213,7 @@ const Home = () => {
                       setShowForm(!showForm);
                       handleUpdateTask(task);
                       setEditingTask(task.id);
+                     
                   } else {
            
                     handleUpdateTask(task);
@@ -235,7 +232,7 @@ const Home = () => {
             </div>
             <button 
               id="DeleteButton" 
-              onClick={() => setShowForm(!showForm)}
+              onClick={() => handleDeleteTask(task.id)}
             >Eliminar
             </button>
           </div>
