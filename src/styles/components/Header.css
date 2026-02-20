@@ -32,6 +32,10 @@ a {
     text-decoration: none; 
 }
 
-#logout {
+#aboutButton {
   background-color: #0b2545;
+}
+
+#logout{
+  background-color: rgb(233, 124, 1);
 }
