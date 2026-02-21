@@ -74,5 +74,5 @@ Se centralizo la transformacion de timestamp con to date() en las querys para ma
 
 Para el filtrado de tareas se opto por realizarlas en el front mediante estados para asi evitar peticiones inecesarias
 
-###Deploy
+### Deploy
 https://my-tasks-flame.vercel.app/
