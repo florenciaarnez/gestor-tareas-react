@@ -6,8 +6,8 @@ const About = () => {
       <Navbar />
       <div className="pageAbout">
         <div id="presentation"><h1>Acerca de Nosotros</h1>
-        <p>My tasks es una aplicación para gestionar tareas de manera eficiente. Permitiendo al usuario iniciar sesion y visualizar únicamente sus tareas, con la posibilidad de filtrar por tareas completadas, retrasadas o en proceso, siendo una herramienta para visualizar el progreso de cada uno. En cada tarea el usuario puede visualizar cuando fue creada la descripcion de esta y la fecha para la cual esta deberia estar terminada</p>
-      
+        <p>My tasks es una aplicación para gestionar tareas de manera eficiente. Permite al usuario iniciar sesión y visualizar únicamente sus tareas, con la posibilidad de filtrar por tareas completadas, retrasadas o en proceso, siendo una herramienta para visualizar el progreso de cada uno. En cada tarea el usuario puede visualizar cuando fue creada la descripción de esta y la fecha para la cual esta debería estar terminada</p>
+
         <h2>Tecnologías Utilizadas:</h2>
         <ul>
           <li>React: Para la interfaz de usuario con JSX, permitiendo al usuario una pagina dinamica e interactiva</li>
@@ -42,7 +42,7 @@ const About = () => {
         </ul>
         <h2>Implementacion del AuthContext</h2>
         <ul>
-          <li>Se crea un contexto de autenticacion en el cual se proporciona de forma global el inicio de sesion del usuario que inicio sesion por medio de un token, permitiendo asi acceder a la informacion del usuario en cualquier componente de la pagina web, sin la necesidad de usar prop drilling</li>
+          <li>Se crea un contexto de autenticacion en el cual se proporciona de forma global el inicio de sesion del usuario que inicio sesion por medio de un estado de autenticacion, permitiendo asi acceder a la informacion del usuario en cualquier componente de la pagina web, sin la necesidad de usar prop drilling</li>
         </ul>
         <h2>Decisiones Técnicas:</h2>
         <h3>Optimizacion de Queries </h3>
