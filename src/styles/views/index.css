@@ -1,0 +1,19 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, p, h1, h2, h3, h4, h5, h6 {
+  font-family: "Poppins", sans-serif;
+}
+
+input, textarea {
+
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+    background: linear-gradient(to top, #025599 0%, #ffffff 60%);
+    min-height: 100vh;
+}

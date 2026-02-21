@@ -1,0 +1,41 @@
+/* Header */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px;
+  background-color: #dff3ff;
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+  color: #3b82b8;
+}
+
+
+.links {
+  display: flex;
+  gap: 22px;
+}
+
+.navbar ul{
+   display: flex;
+    gap: 10px;
+    padding: 0;
+    list-style: none;
+     gap: 15px;  
+}
+
+a {
+    color: white;
+    text-decoration: none; 
+}
+
+#aboutButton {
+  background-color: #0b2545;
+}
+
+#logout{
+  background-color: rgb(233, 124, 1);
+}
